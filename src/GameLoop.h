@@ -6,14 +6,18 @@
 class GameLoop
 {
   private:
-    static GLFWwindow * window;
+    GLFWwindow * window;
 
-    GameLoop();
+  protected:
+    void render();
+    void update();
 
   public:
-    static void init();
-    static void run();
-    static void terminate();
+    GameLoop();
+
+    void init();
+    void run();
+    void terminate();
 };
 
 #endif

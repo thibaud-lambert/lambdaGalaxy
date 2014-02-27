@@ -2,7 +2,10 @@
 
 #include <cstdlib>
 
-GLFWwindow * GameLoop::window = NULL;
+GameLoop::GameLoop()
+:window(NULL)
+{
+}
 
 void GameLoop::init()
 {
@@ -28,16 +31,16 @@ void GameLoop::run()
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
   {
-    /* Render here */
+    /* Update the game state */
+    update();
+
+    /* Render the game */
+    render();
 
     /* Swap front and back buffers */
     glfwSwapBuffers(window);
-
-    /* Poll for and process events */
-    glfwPollEvents();
   }
 }
-
 
 void GameLoop::terminate()
 {
@@ -45,3 +48,13 @@ void GameLoop::terminate()
   glfwTerminate();
 }
 
+void GameLoop::render()
+{
+  glClear(GL_COLOR_BUFFER_BIT); 
+}
+
+void GameLoop::update()
+{
+  /* Poll for and process events */
+  glfwPollEvents();
+}

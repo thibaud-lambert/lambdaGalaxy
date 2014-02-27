@@ -3,8 +3,9 @@
 
 int main(void)
 {
-  GameLoop::init();
-  GameLoop::run();
-  GameLoop::terminate();
+  GameLoop * gameloop = new GameLoop();
+  gameloop->init();
+  gameloop->run();
+  gameloop->terminate();
   return 0;
 }
