@@ -28,11 +28,6 @@ class Camera
     void pitch(float theta);
     void yaw(float theta);
 
-    /* Axis getter*/
-    Eigen::Vector3f getFront();
-    Eigen::Vector3f getVertical();
-    Eigen::Vector3f getHorizontal();
-
   private:
     void updateViewMatrix();
     void updateProjectionMatrix();

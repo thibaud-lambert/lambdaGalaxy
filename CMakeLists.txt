@@ -27,6 +27,10 @@ include_directories(src/object/shader)
 set(SOURCES 
   src/main.cpp
   src/GameLoop.cpp
+  src/StarField.cpp
+  src/Star.cpp
+  src/Chunk.cpp
+  src/PlanetarySystem.cpp
   src/camera/Camera.cpp
   src/object/Object.cpp
   src/object/mesh/Mesh.cpp

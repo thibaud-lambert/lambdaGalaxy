@@ -10,10 +10,13 @@ class Object
 {
 public:
     Object(Mesh *mesh, Shader* shader);
-    void setTransformation(const Eigen::Affine3f& mat);
-    void draw(Camera &cam);
+    virtual ~Object();
+    virtual void setTransformation(const Eigen::Affine3f& mat);
+    virtual void draw(Camera &cam);
 
 protected:
+    virtual void sendUniform(Camera &cam);
+
     Shader* shader;
     Mesh* mesh;
     Eigen::Affine3f transMatrix;

@@ -4,7 +4,7 @@
 #include <iostream>
 
 GameLoop::GameLoop()
-:window(NULL),mesh(NULL),shader(NULL),object(NULL),cam(NULL)
+:window(NULL),cam(NULL),starField(NULL)
 {
 }
 
@@ -66,17 +66,12 @@ void GameLoop::terminate()
 
 void GameLoop::initScene()
 {
-  mesh = MeshLoader::loadMesh("../data/cube.obj");
-
-  mesh->displayInfo();
-
-  shader = new Shader();
-  shader->loadFromFiles("../shader/basic.vert","../shader/basic.frag","","","../shader/basic.geo");
-
-  object = new Object(mesh,shader);
-
   cam = new Camera(640, 480);
   cam->setPosition(*new Eigen::Vector3f(0,0,-5));
+
+  starField = new StarField();
+  starField->init(cam->getPosition());
+
 }
 
 void GameLoop::render()
@@ -88,17 +83,18 @@ void GameLoop::render()
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  object->draw(*cam);
+  starField->draw(*cam);
 }
 
 void GameLoop::update()
 {
   inputHandler();
+  starField->update(cam->getPosition());
 }
 
 void GameLoop::inputHandler()
 {
-  float speed = 0.001f;
+  float speed = 5.0f;
   float time = glfwGetTime();
 
   /* Poll for and process events */
@@ -108,23 +104,23 @@ void GameLoop::inputHandler()
     glfwSetWindowShouldClose(window, GL_TRUE);
 
   if(glfwGetKey(window, GLFW_KEY_W)  == GLFW_PRESS)
-    cam->moveFoward(speed * time);
-
-  if(glfwGetKey(window, GLFW_KEY_S)  == GLFW_PRESS)
     cam->moveFoward(-speed * time);
 
-  if(glfwGetKey(window, GLFW_KEY_A)  == GLFW_PRESS)
-    cam->moveHorizontal(speed * time);
+  if(glfwGetKey(window, GLFW_KEY_S)  == GLFW_PRESS)
+    cam->moveFoward(speed * time);
 
-  if(glfwGetKey(window, GLFW_KEY_D)  == GLFW_PRESS)
+  if(glfwGetKey(window, GLFW_KEY_A)  == GLFW_PRESS)
     cam->moveHorizontal(-speed * time);
 
+  if(glfwGetKey(window, GLFW_KEY_D)  == GLFW_PRESS)
+    cam->moveHorizontal(speed * time);
+
   double x,y;
-  float rotSpeed = 0.0001f;
+  float rotSpeed = 0.0005f;
   glfwGetCursorPos(window, &x, &y);     
 
-  cam->yaw(-rotSpeed * (320 - x) * time);
-  cam->pitch(-rotSpeed * (240 - y) * time);
+  cam->yaw(rotSpeed * (320 - x) * time);
+  cam->pitch(rotSpeed * (240 - y) * time);
 
   glfwSetCursorPos(window, 320, 240);
-}
+} 

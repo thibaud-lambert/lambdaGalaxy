@@ -6,11 +6,8 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-#include "MeshLoader.h"
-#include "Mesh.h"
-#include "Shader.h"
-#include "Object.h"
 #include "Camera.h"
+#include "StarField.h"
 
 class GameLoop
 {
@@ -31,10 +28,9 @@ class GameLoop
 
       GLFWwindow * window;
 
-      Mesh * mesh;
-      Shader * shader;
-      Object * object;
-      Camera * cam;
+     Camera * cam;
+
+      StarField * starField;
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include <iostream>
 
   Camera::Camera(float width, float height, float fovY)
-:orientation(Eigen::AngleAxisf(0,Eigen::Vector3f(1,1,1))), 
+:orientation( Eigen::Quaternionf::Identity()), 
   position(0,0,0),
   projectionIsUpdate(false),
   viewIsUpdate(false)
@@ -43,23 +43,23 @@ void Camera::move(float distance, Eigen::Vector3f axis)
 {
   viewIsUpdate = false;
   axis.normalize();
-  position += axis * distance;
+  position += orientation.toRotationMatrix() * axis * distance;
 }
 
 void Camera::moveFoward(float distance)
 {
-  move(distance,getFront());
+  move(distance,Eigen::Vector3f(0,0,1));
 }
 
 void Camera::moveVertical(float distance)
 {
 
-  move(distance,getVertical());
+  move(distance,Eigen::Vector3f(0,1,0));
 }
 
 void Camera::moveHorizontal(float distance)
 {
-  move(distance,getHorizontal());
+  move(distance,Eigen::Vector3f(1,0,0));
 }
 
 void Camera::rotate(float theta, Eigen::Vector3f axis)
@@ -67,56 +67,32 @@ void Camera::rotate(float theta, Eigen::Vector3f axis)
   viewIsUpdate = false;
   Eigen::AngleAxisf angleAxis(theta, axis);
   Eigen::Quaternionf rot(angleAxis);
-  rot.norm();
-  rot = orientation * rot;
-  rot.norm();
-  orientation = rot;
+  rot.normalize();
+  orientation = orientation * rot;
+  orientation.normalize();
 }
 
 void Camera::roll(float theta)
 {
-  rotate(theta,getFront());
+  rotate(theta,Eigen::Vector3f(0,0,1));
 }
 
 void Camera::pitch(float theta)
 {
-  rotate(theta,getHorizontal());
+  rotate(theta,Eigen::Vector3f(1,0,0));
 }
 
 void Camera::yaw(float theta)
 {
-  rotate(theta,getVertical());
-}
-
-Eigen::Vector3f Camera::getFront()
-{
-  Eigen::Matrix3f orientMat = orientation.matrix();
-  Eigen::Vector3f axis(orientMat(2,0), orientMat(2,1), orientMat(2,2));
-  axis.normalize();
-  return axis;
-}
-
-Eigen::Vector3f Camera::getVertical()
-{
-  Eigen::Matrix3f orientMat = orientation.matrix();
-  Eigen::Vector3f axis(orientMat(1,0), orientMat(1,1), orientMat(1,2));
-  axis.normalize();
-  return axis;
-}
-
-Eigen::Vector3f Camera::getHorizontal()
-{
-  Eigen::Matrix3f orientMat = orientation.matrix();
-  Eigen::Vector3f axis(orientMat(0,0), orientMat(0,1), orientMat(0,2));
-  axis.normalize();
-  return axis;
+  rotate(theta,Eigen::Vector3f(0,1,0));
 }
 
 void Camera::updateViewMatrix()
 {
   if(!viewIsUpdate)
   {
-    view = orientation * Eigen::Translation3f(position);
+    view.linear() = orientation.conjugate().toRotationMatrix();
+    view.translation() = - (view.linear() * position);
     viewIsUpdate = true;
   }
 }
