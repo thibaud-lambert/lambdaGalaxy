@@ -15,6 +15,7 @@ class StarField
     void init(Eigen::Vector3f pos);
     void update(Eigen::Vector3f pos);
     void draw(Camera &cam);
+    float getDist(Eigen::Vector3f);
 
   private:
     void updateDelete(int x, int y, int z);

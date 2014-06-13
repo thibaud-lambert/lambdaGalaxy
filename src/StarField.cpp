@@ -284,3 +284,8 @@ void StarField::update(Eigen::Vector3f pos)
   }
 
 }
+
+float getDist(Eigen::Vector3f)
+{
+}
+
