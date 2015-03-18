@@ -7,13 +7,13 @@ Mesh::Mesh()
 {
 }
 
-void Mesh::addVertex(Eigen::Vector3f v)
+void Mesh::addVertex(const Eigen::Vector3f &v)
 {
   Vertex * vertex = new Vertex(v);
   vertices.push_back(v);
 }
 
-void Mesh::addFaces(Eigen::Vector3i f)
+void Mesh::addFaces(const Eigen::Vector3i &f)
 {
   faces.push_back(f);
 }

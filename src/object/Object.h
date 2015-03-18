@@ -14,6 +14,8 @@ public:
     virtual void setTransformation(const Eigen::Affine3f& mat);
     virtual void draw(Camera &cam);
 
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
 protected:
     virtual void sendUniform(Camera &cam);
 

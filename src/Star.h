@@ -10,7 +10,7 @@ class Star : public Object
     Star(Mesh * mesh, Shader * shader);
     ~Star();
     virtual void setTransformation(const Eigen::Affine3f& mat);
-
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   private:
     virtual void sendUniform(Camera &cam);
 

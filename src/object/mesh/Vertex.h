@@ -9,6 +9,8 @@ struct Vertex
 
   Vertex(const Eigen::Vector3f& pos);
 
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
   Eigen::Vector3f position;
   Eigen::Vector3f normal;
   Eigen::Vector2f texcoord;

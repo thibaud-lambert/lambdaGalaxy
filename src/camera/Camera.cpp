@@ -16,30 +16,33 @@
    zNear = 0.1f;
 }
 
-Eigen::Vector3f Camera::getPosition()
+const Eigen::Vector3f&
+Camera::getPosition() const
 {
   return position;
 }
 
-Eigen::Affine3f Camera::getView()
+const Eigen::Affine3f&
+Camera::getView()
 {
   updateViewMatrix();
   return view;
 }
 
-Eigen::Matrix4f Camera::getProjection()
+const Eigen::Matrix4f&
+Camera::getProjection()
 {
   updateProjectionMatrix();
   return projection;
 }
 
-void Camera::setPosition(Eigen::Vector3f pos)
+void Camera::setPosition(const Eigen::Vector3f &pos)
 {
   viewIsUpdate = false;
   position = pos;
 }
 
-void Camera::move(float distance, Eigen::Vector3f axis)
+void Camera::move(float distance, Eigen::Vector3f &axis)
 {
   viewIsUpdate = false;
   axis.normalize();
@@ -48,21 +51,23 @@ void Camera::move(float distance, Eigen::Vector3f axis)
 
 void Camera::moveFoward(float distance)
 {
-  move(distance,Eigen::Vector3f(0,0,1));
+  Eigen::Vector3f vec = Eigen::Vector3f(0,0,1);
+  move(distance, vec);
 }
 
 void Camera::moveVertical(float distance)
 {
-
-  move(distance,Eigen::Vector3f(0,1,0));
+  Eigen::Vector3f vec = Eigen::Vector3f(0,1,0);
+  move(distance, vec);
 }
 
 void Camera::moveHorizontal(float distance)
 {
-  move(distance,Eigen::Vector3f(1,0,0));
+  Eigen::Vector3f vec = Eigen::Vector3f(1,0,0);
+  move(distance, vec);
 }
 
-void Camera::rotate(float theta, Eigen::Vector3f axis)
+void Camera::rotate(float theta, const Eigen::Vector3f &axis)
 {
   viewIsUpdate = false;
   Eigen::AngleAxisf angleAxis(theta, axis);

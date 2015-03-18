@@ -12,10 +12,11 @@ class StarField
 {
   public:
     StarField();
-    void init(Eigen::Vector3f pos);
-    void update(Eigen::Vector3f pos);
+    void init(const Eigen::Vector3f &pos);
+    void update(const Eigen::Vector3f &pos);
     void draw(Camera &cam);
-    float getDist(Eigen::Vector3f);
+    float getDist(const Eigen::Vector3f &pos);
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   private:
     void updateDelete(int x, int y, int z);

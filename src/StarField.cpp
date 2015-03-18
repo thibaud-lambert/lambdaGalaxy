@@ -7,7 +7,7 @@ StarField::StarField()
 }
 
 
-void StarField::init(Eigen::Vector3f pos)
+void StarField::init(const Eigen::Vector3f &pos)
 {
   int i,j,k;
   position[0] = floor(pos[0]/CHUNK_SIZE)-CHUNK_NUMBER/2;
@@ -253,7 +253,7 @@ void StarField::updateNew()
   }
 }
 
-void StarField::update(Eigen::Vector3f pos)
+void StarField::update(const Eigen::Vector3f &pos)
 {
   int x,y,z;
   x = floor(pos[0]/CHUNK_SIZE)-CHUNK_NUMBER/2 - position[0];
@@ -285,7 +285,7 @@ void StarField::update(Eigen::Vector3f pos)
 
 }
 
-float getDist(Eigen::Vector3f)
+float getDist(const Eigen::Vector3f &pos)
 {
 }
 
