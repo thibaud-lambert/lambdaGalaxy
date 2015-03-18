@@ -3,16 +3,15 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-
 find_package(PkgConfig REQUIRED)
-
-#GLEW
-INCLUDE(FindGLEW REQUIRED)
-INCLUDE_DIRECTORIES(${GLEW_INCLUDE_DIR})
 
 #GLFW
 pkg_search_module(GLFW REQUIRED glfw3)
 include_directories(${GLFW_INCLUDE_DIRS})
+
+#GLEW
+pkg_search_module(GLEW REQUIRED glew)
+include_directories(${GLEW_INCLUDE_DIRS})
 
 #Eigen
 pkg_search_module(EIGEN3 REQUIRED eigen3)
@@ -39,5 +38,5 @@ set(SOURCES
   src/object/shader/Shader.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${GLFW_STATIC_LIBRARIES} ${GLEW_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GLFW_STATIC_LIBRARIES} ${GLEW_STATIC_LIBRARIES} glu32 opengl32)
 
