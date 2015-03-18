@@ -94,7 +94,6 @@ void GameLoop::update()
 
 void GameLoop::inputHandler()
 {
-  float dist = starField->getDist(cam->getPosition());
   float speed = 5.0f;
   float time = glfwGetTime();
 
