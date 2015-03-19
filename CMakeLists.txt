@@ -1,6 +1,8 @@
 project(lambdaGalaxy)
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -O2")
+
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 find_package(PkgConfig REQUIRED)
