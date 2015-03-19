@@ -93,7 +93,9 @@ void GameLoop::update()
 void GameLoop::inputHandler()
 {
   float speed = 5.0f;
-  float time = glfwGetTime();
+  float time = 4.0f;
+  //float time = glfwGetTime();
+  //glfwSetTime(time);
 
   /* Poll for and process events */
   glfwPollEvents();  
