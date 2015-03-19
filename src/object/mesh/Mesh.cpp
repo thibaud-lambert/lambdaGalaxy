@@ -9,8 +9,7 @@ Mesh::Mesh()
 
 void Mesh::addVertex(const Eigen::Vector3f &v)
 {
-  Vertex * vertex = new Vertex(v);
-  vertices.push_back(v);
+  vertices.push_back(Vertex(v));
 }
 
 void Mesh::addFaces(const Eigen::Vector3i &f)
@@ -83,7 +82,7 @@ void Mesh::drawGeometry(int prg_id, bool usePatch)
 
 void Mesh::displayInfo()
 {
-  int i;
+  size_t i;
   std::cout << std::endl;
   std::cout << "Vertex list: " << std::endl;
   for(i=0; i<vertices.size(); i++)

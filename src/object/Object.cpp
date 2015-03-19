@@ -1,7 +1,7 @@
 #include <Object.h>
 
 Object::Object(Mesh *m, Shader *s)
-    :mesh(m), shader(s), transMatrix(Eigen::Matrix4f::Identity())
+    :shader(s), mesh(m), transMatrix(Eigen::Matrix4f::Identity())
 {}
 
 Object::~Object()

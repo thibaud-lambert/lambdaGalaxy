@@ -285,7 +285,8 @@ void StarField::update(const Eigen::Vector3f &pos)
 
 }
 
-float getDist(const Eigen::Vector3f &pos)
+float getDist(const Eigen::Vector3f &/*pos*/)
 {
+  return 0.0f;
 }
 

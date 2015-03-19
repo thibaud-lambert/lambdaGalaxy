@@ -76,10 +76,8 @@ void GameLoop::initScene()
 
 void GameLoop::render()
 {
-  float ratio;
   int width, height;
   glfwGetFramebufferSize(window, &width, &height);
-  ratio = width / (float) height;
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

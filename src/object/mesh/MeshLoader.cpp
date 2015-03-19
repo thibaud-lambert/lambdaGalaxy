@@ -6,7 +6,7 @@
 
 Mesh * MeshLoader::loadMesh(const std::string& filename)
 {
-  Mesh * mesh;
+  Mesh * mesh = NULL;
   int extOffset = filename.find_last_of('.')+1;  
   std::string ext = filename.substr(extOffset, filename.size()-extOffset);
   if(ext.compare("obj") == 0 || ext.compare("OBJ") == 0)
@@ -38,8 +38,8 @@ Mesh * MeshLoader::loadObj(const std::string& filename)
   std::vector<Eigen::Vector3i> rfaces;
 
   Eigen::Vector3f * v;
-  Eigen::Vector3f * t;
-  Eigen::Vector3f * n;
+  //Eigen::Vector3f * t;
+  //Eigen::Vector3f * n;
   Eigen::Vector3i * f;
 
   std::string line;
@@ -92,7 +92,7 @@ Mesh * MeshLoader::loadObj(const std::string& filename)
   }
 
   Mesh * mesh = new Mesh();
-  int i;
+  size_t i;
   for(i=0; i<vertices.size(); i++)
   {
     mesh->addVertex(vertices[i]);
