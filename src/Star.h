@@ -16,8 +16,8 @@ class Star : public Object
   private:
     virtual void sendUniform(Camera& cam);
 
-    float scale;
-    Eigen::Vector3f color;
+    float m_scale;
+    Eigen::Vector3f m_color;
 };
 
 #endif 

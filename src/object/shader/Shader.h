@@ -21,9 +21,9 @@ public:
 
     int getAttribLocation(const char* name) const;
 
-    int id() const { return mProgramID; }
+    int id() const { return m_ProgramID; }
     
-    bool valid() const { return mIsValid; }
+    bool valid() const { return m_IsValid; }
 
 protected:
          
@@ -35,8 +35,8 @@ protected:
     static void printProgramInfoLog(GLuint objectID);
     static void printShaderInfoLog(GLuint objectID);
 
-    bool mIsValid;
-    GLuint mProgramID;
+    bool m_IsValid;
+    GLuint m_ProgramID;
 };
 
 #endif

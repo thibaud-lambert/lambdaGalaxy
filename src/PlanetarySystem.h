@@ -14,15 +14,15 @@ class PlanetarySystem
     void draw(Camera& cam);
 
   private:
-    int x;
-    int y;
-    int z;
-    Star* star;
-
     static void loadAssets();
-    static Mesh* mesh;
-    static Shader* shader;
-    static bool assetsAreLoad;
+
+    int m_x;
+    int m_y;
+    int m_z;
+    Star* m_star;
+    static Mesh* s_mesh;
+    static Shader* s_shader;
+    static bool s_assetsAreLoad;
 };
 
 #endif

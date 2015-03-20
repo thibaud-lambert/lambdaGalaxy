@@ -23,9 +23,9 @@ class StarField
     void updateDelete(int x, int y, int z);
     void updateMove(int x, int y, int z);
     void updateNew();
-    Chunk**** chunkGrid;
-    int range;
-    Eigen::Vector3i position;
+
+    Chunk**** m_chunkGrid;
+    Eigen::Vector3i m_position;
 };
 
 #endif

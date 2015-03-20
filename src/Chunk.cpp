@@ -1,21 +1,21 @@
 #include "Chunk.h"
 
 Chunk::Chunk(int x, int y, int z)
-  :x(x), y(y), z(z)
+  :m_x(x), m_y(y), m_z(z)
 {
   int i, j, k;
-  planetarySystemGrid = new PlanetarySystem***[PLANETARY_SYSTEM_NUMBER_BY_CHUNK];
+  m_planetarySystemGrid = new PlanetarySystem***[PLANETARY_SYSTEM_NUMBER_BY_CHUNK];
   for (i = 0; i < PLANETARY_SYSTEM_NUMBER_BY_CHUNK; i++)
   {
-    planetarySystemGrid[i] = new PlanetarySystem**[PLANETARY_SYSTEM_NUMBER_BY_CHUNK];
+    m_planetarySystemGrid[i] = new PlanetarySystem**[PLANETARY_SYSTEM_NUMBER_BY_CHUNK];
     for (j = 0; j < PLANETARY_SYSTEM_NUMBER_BY_CHUNK; j++)
     {
-      planetarySystemGrid[i][j] = new PlanetarySystem*[PLANETARY_SYSTEM_NUMBER_BY_CHUNK];
+      m_planetarySystemGrid[i][j] = new PlanetarySystem*[PLANETARY_SYSTEM_NUMBER_BY_CHUNK];
       for (k = 0; k < PLANETARY_SYSTEM_NUMBER_BY_CHUNK; k++)
       {
-        planetarySystemGrid[i][j][k] = new PlanetarySystem(x * PLANETARY_SYSTEM_NUMBER_BY_CHUNK + i,
-                                                           y * PLANETARY_SYSTEM_NUMBER_BY_CHUNK + j,
-                                                           z * PLANETARY_SYSTEM_NUMBER_BY_CHUNK + k);
+        m_planetarySystemGrid[i][j][k] = new PlanetarySystem(m_x * PLANETARY_SYSTEM_NUMBER_BY_CHUNK + i,
+                                                             m_y * PLANETARY_SYSTEM_NUMBER_BY_CHUNK + j,
+                                                             m_z * PLANETARY_SYSTEM_NUMBER_BY_CHUNK + k);
       }
     }
   }
@@ -31,7 +31,7 @@ Chunk::draw(Camera& cam)
     {
       for (k = 0; k < PLANETARY_SYSTEM_NUMBER_BY_CHUNK; k++)
       {
-        planetarySystemGrid[i][j][k]->draw(cam);
+        m_planetarySystemGrid[i][j][k]->draw(cam);
       }
     }
   }

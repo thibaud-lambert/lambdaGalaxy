@@ -5,8 +5,8 @@
 #include <assert.h>
 
 Shader::Shader()
-  : mIsValid(false),
-  mProgramID(-1)
+  : m_IsValid(false)
+  , m_ProgramID(-1)
 {
 }
 
@@ -69,7 +69,7 @@ Shader::addShader(int shaderType, const std::string& src)
   printShaderInfoLog(shaderID);
 
   if(compiled)
-    glAttachShader(mProgramID, shaderID);
+    glAttachShader(m_ProgramID, shaderID);
 
   return compiled;
 }
@@ -81,7 +81,7 @@ Shader::loadSources(const std::string& vsrc, const std::string& fsrc,
 {
   bool allIsOk = true;
 
-  mProgramID = glCreateProgram();
+  m_ProgramID = glCreateProgram();
 
   // vertex shader
   allIsOk = allIsOk && addShader(GL_VERTEX_SHADER, vsrc);
@@ -104,14 +104,14 @@ Shader::loadSources(const std::string& vsrc, const std::string& fsrc,
     allIsOk = allIsOk && addShader(GL_GEOMETRY_SHADER, geosrc);
   }
 
-  glLinkProgram(mProgramID);
+  glLinkProgram(m_ProgramID);
 
   int isLinked;
-  glGetProgramiv(mProgramID, GL_LINK_STATUS, &isLinked);
+  glGetProgramiv(m_ProgramID, GL_LINK_STATUS, &isLinked);
 
   allIsOk = allIsOk && isLinked;
-  mIsValid = isLinked == GL_TRUE;
-  printProgramInfoLog(mProgramID);
+  m_IsValid = isLinked == GL_TRUE;
+  printProgramInfoLog(m_ProgramID);
 
   return allIsOk;
 }
@@ -119,22 +119,22 @@ Shader::loadSources(const std::string& vsrc, const std::string& fsrc,
 void
 Shader::activate() const
 {
-  assert(mIsValid);
-  glUseProgram(mProgramID);
+  assert(m_IsValid);
+  glUseProgram(m_ProgramID);
 }
 
 int
 Shader::getUniformLocation(const char* name) const
 {
-  assert(mIsValid);
-  return glGetUniformLocation(mProgramID, name);
+  assert(m_IsValid);
+  return glGetUniformLocation(m_ProgramID, name);
 }
 
 int
 Shader::getAttribLocation(const char* name) const
 {
-  assert(mIsValid);
-  return glGetAttribLocation(mProgramID, name);
+  assert(m_IsValid);
+  return glGetAttribLocation(m_ProgramID, name);
 }
 
 void

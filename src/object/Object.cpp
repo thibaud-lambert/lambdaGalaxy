@@ -1,7 +1,9 @@
 #include <Object.h>
 
 Object::Object(Mesh* m, Shader* s)
-  : shader(s), mesh(m), transMatrix(Eigen::Matrix4f::Identity())
+  : m_shader(s)
+  , m_mesh(m)
+  , m_transMatrix(Eigen::Matrix4f::Identity())
 {}
 
 Object::~Object()
@@ -12,26 +14,26 @@ Object::~Object()
 void
 Object::setTransformation(const Eigen::Affine3f& mat)
 {
-  transMatrix = mat;
+  m_transMatrix = mat;
 }
 
 void
 Object::draw(Camera& cam)
 {
-  shader->activate();
+  m_shader->activate();
 
   sendUniform(cam);
 
-  mesh->drawGeometry(shader->id(), false);
+  m_mesh->drawGeometry(m_shader->id(), false);
 }
 
 void
 Object::sendUniform(Camera& cam)
 {
-    glUniformMatrix4fv(glGetUniformLocation(shader->id(), "matView"), 1, GL_FALSE, cam.getView().data());
+    glUniformMatrix4fv(glGetUniformLocation(m_shader->id(), "matView"), 1, GL_FALSE, cam.getView().data());
     
-    glUniformMatrix4fv(glGetUniformLocation(shader->id(), "matProj"), 1, GL_FALSE, cam.getProjection().data());
+    glUniformMatrix4fv(glGetUniformLocation(m_shader->id(), "matProj"), 1, GL_FALSE, cam.getProjection().data());
 
-    glUniformMatrix4fv(glGetUniformLocation(shader->id(), "matObj"), 1, GL_FALSE, transMatrix.data());
+    glUniformMatrix4fv(glGetUniformLocation(m_shader->id(), "matObj"), 1, GL_FALSE, m_transMatrix.data());
 }
 

@@ -13,8 +13,10 @@ class Chunk
     Chunk(int x, int y, int z);
     void draw(Camera& cam);
   private:
-    int x, y, z;
-    PlanetarySystem**** planetarySystemGrid;
+    int m_x;
+    int m_y;
+    int m_z;
+    PlanetarySystem**** m_planetarySystemGrid;
 };
 
 #endif

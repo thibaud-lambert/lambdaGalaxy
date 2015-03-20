@@ -22,14 +22,14 @@ class Mesh
   void displayInfo();
 
   private:
-  std::vector<Vertex> vertices;
-  std::vector<Eigen::Vector3i> faces;
+  std::vector<Vertex> m_vertices;
+  std::vector<Eigen::Vector3i> m_faces;
 
-  unsigned int vertexBufferId;
-  unsigned int indexBufferId;
-  unsigned int vertexArrayId;
+  unsigned int m_vertexBufferId;
+  unsigned int m_indexBufferId;
+  unsigned int m_vertexArrayId;
 
-  bool isInit;
+  bool m_isInit;
 };
 
 #endif

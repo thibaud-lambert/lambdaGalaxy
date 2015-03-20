@@ -19,9 +19,9 @@ public:
 protected:
     virtual void sendUniform(Camera& cam);
 
-    Shader* shader;
-    Mesh* mesh;
-    Eigen::Affine3f transMatrix;
+    Shader* m_shader;
+    Mesh* m_mesh;
+    Eigen::Affine3f m_transMatrix;
 };
 
 #endif

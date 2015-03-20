@@ -34,19 +34,19 @@ class Camera
     void updateViewMatrix();
     void updateProjectionMatrix();
 
-    Eigen::Quaternionf orientation;
-    Eigen::Vector3f position;
-    Eigen::Affine3f view;
-    Eigen::Matrix4f projection;
+    Eigen::Quaternionf m_orientation;
+    Eigen::Vector3f m_position;
+    Eigen::Affine3f m_view;
+    Eigen::Matrix4f m_projection;
 
-    float fovY;
-    float zFar;
-    float zNear;
-    float width;
-    float height;
+    float m_fovY;
+    float m_zFar;
+    float m_zNear;
+    float m_width;
+    float m_height;
 
-    bool projectionIsUpdate;
-    bool viewIsUpdate;
+    bool m_projectionIsUpdate;
+    bool m_viewIsUpdate;
 
 };
 

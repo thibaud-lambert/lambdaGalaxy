@@ -4,7 +4,7 @@
 #include <iostream>
 
 GameLoop::GameLoop()
-  : window(NULL), cam(NULL), starField(NULL)
+  : m_window(NULL), m_cam(NULL), m_starField(NULL)
 {
 }
 
@@ -17,17 +17,17 @@ GameLoop::init()
     exit(1);
   }
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(640, 480, "lambdaGalaxy", NULL, NULL);
-  if (!window)
+  m_window = glfwCreateWindow(640, 480, "lambdaGalaxy", NULL, NULL);
+  if (!m_window)
   {
     glfwTerminate();
     exit(1);
   }
 
   /* Make the window's context current */
-  glfwMakeContextCurrent(window);
+  glfwMakeContextCurrent(m_window);
 
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);   
+  glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   /* Glew */
   glewExperimental = true;
@@ -47,7 +47,7 @@ void
 GameLoop::run()
 {
   /* Loop until the user closes the window */
-  while (!glfwWindowShouldClose(window))
+  while (!glfwWindowShouldClose(m_window))
   {
     /* Update the game state */
     update();
@@ -56,7 +56,7 @@ GameLoop::run()
     render();
 
     /* Swap front and back buffers */
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(m_window);
   }
 }
 
@@ -70,11 +70,11 @@ GameLoop::terminate()
 void
 GameLoop::initScene()
 {
-  cam = new Camera(640.0f, 480.0f);
-  cam->setPosition(*new Eigen::Vector3f(0.0f, 0.0f, -5.0f));
+  m_cam = new Camera(640.0f, 480.0f);
+  m_cam->setPosition(*new Eigen::Vector3f(0.0f, 0.0f, -5.0f));
 
-  starField = new StarField();
-  starField->init(cam->getPosition());
+  m_starField = new StarField();
+  m_starField->init(m_cam->getPosition());
 
 }
 
@@ -82,18 +82,18 @@ void
 GameLoop::render()
 {
   int width, height;
-  glfwGetFramebufferSize(window, &width, &height);
+  glfwGetFramebufferSize(m_window, &width, &height);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  starField->draw(*cam);
+  m_starField->draw(*m_cam);
 }
 
 void
 GameLoop::update()
 {
   inputHandler();
-  starField->update(cam->getPosition());
+  m_starField->update(m_cam->getPosition());
 }
 
 void
@@ -107,27 +107,27 @@ GameLoop::inputHandler()
   /* Poll for and process events */
   glfwPollEvents();  
   
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE)  == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, GL_TRUE);
+  if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    glfwSetWindowShouldClose(m_window, GL_TRUE);
 
-  if (glfwGetKey(window, GLFW_KEY_W)  == GLFW_PRESS)
-    cam->moveFoward(-speed * time);
+  if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+    m_cam->moveFoward(-speed * time);
 
-  if (glfwGetKey(window, GLFW_KEY_S)  == GLFW_PRESS)
-    cam->moveFoward(speed * time);
+  if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+    m_cam->moveFoward(speed * time);
 
-  if (glfwGetKey(window, GLFW_KEY_A)  == GLFW_PRESS)
-    cam->moveHorizontal(-speed * time);
+  if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+    m_cam->moveHorizontal(-speed * time);
 
-  if (glfwGetKey(window, GLFW_KEY_D)  == GLFW_PRESS)
-    cam->moveHorizontal(speed * time);
+  if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+    m_cam->moveHorizontal(speed * time);
 
   double x, y;
   float rotSpeed = 0.0005f;
-  glfwGetCursorPos(window, &x, &y);     
+  glfwGetCursorPos(m_window, &x, &y);
 
-  cam->yaw(rotSpeed * (320 - x) * time);
-  cam->pitch(rotSpeed * (240 - y) * time);
+  m_cam->yaw(rotSpeed * (320 - x) * time);
+  m_cam->pitch(rotSpeed * (240 - y) * time);
 
-  glfwSetCursorPos(window, 320, 240);
+  glfwSetCursorPos(m_window, 320, 240);
 } 

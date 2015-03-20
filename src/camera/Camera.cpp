@@ -3,58 +3,58 @@
 #include <Eigen/Core>
 #include <iostream>
 
-  Camera::Camera(float width, float height, float fovY)
-:orientation( Eigen::Quaternionf::Identity()), 
-  position(0,0,0),
-  projectionIsUpdate(false),
-  viewIsUpdate(false)
+Camera::Camera(float width, float height, float fovY)
+  : m_orientation(Eigen::Quaternionf::Identity())
+  , m_position(0, 0, 0)
+  , m_fovY(fovY)
+  , m_zFar(50000.0f)
+  , m_zNear(0.1f)
+  , m_width(width)
+  , m_height(height)
+  , m_projectionIsUpdate(false)
+  , m_viewIsUpdate(false)
 {
-   this->fovY = fovY;
-   this->width = width;
-   this->height = height;
-   zFar = 50000.f;
-   zNear = 0.1f;
 }
 
 const Eigen::Vector3f&
 Camera::getPosition() const
 {
-  return position;
+  return m_position;
 }
 
 const Eigen::Affine3f&
 Camera::getView()
 {
   updateViewMatrix();
-  return view;
+  return m_view;
 }
 
 const Eigen::Matrix4f&
 Camera::getProjection()
 {
   updateProjectionMatrix();
-  return projection;
+  return m_projection;
 }
 
 void
 Camera::setPosition(const Eigen::Vector3f& pos)
 {
-  viewIsUpdate = false;
-  position = pos;
+  m_viewIsUpdate = false;
+  m_position = pos;
 }
 
 void
 Camera::move(float distance, Eigen::Vector3f& axis)
 {
-  viewIsUpdate = false;
+  m_viewIsUpdate = false;
   axis.normalize();
-  position += orientation.toRotationMatrix() * axis * distance;
+  m_position += m_orientation.toRotationMatrix() * axis * distance;
 }
 
 void
 Camera::moveFoward(float distance)
 {
-  Eigen::Vector3f vec = Eigen::Vector3f(0,0,1);
+  Eigen::Vector3f vec(0.0f, 0.0f, 1.0f);
   move(distance, vec);
 }
 
@@ -75,12 +75,12 @@ Camera::moveHorizontal(float distance)
 void
 Camera::rotate(float theta, const Eigen::Vector3f& axis)
 {
-  viewIsUpdate = false;
+  m_viewIsUpdate = false;
   Eigen::AngleAxisf angleAxis(theta, axis);
   Eigen::Quaternionf rot(angleAxis);
   rot.normalize();
-  orientation = orientation * rot;
-  orientation.normalize();
+  m_orientation *= rot;
+  m_orientation.normalize();
 }
 
 void
@@ -104,31 +104,31 @@ Camera::yaw(float theta)
 void
 Camera::updateViewMatrix()
 {
-  if(!viewIsUpdate)
+  if(!m_viewIsUpdate)
   {
-    view.linear() = orientation.conjugate().toRotationMatrix();
-    view.translation() = - (view.linear() * position);
-    viewIsUpdate = true;
+    m_view.linear() = m_orientation.conjugate().toRotationMatrix();
+    m_view.translation() = -(m_view.linear() * m_position);
+    m_viewIsUpdate = true;
   }
 }
 
 void
 Camera::updateProjectionMatrix()
 {
-  if(!projectionIsUpdate)
+  if (!m_projectionIsUpdate)
   {
-    projection.setIdentity();
+    m_projection.setIdentity();
 
-    float xScale = yScale * height / width;
-    projection(0,0) = xScale;
-    projection(1,1) = yScale;
+    float yScale = 1.0f / tan(m_fovY * 0.5);
+    float xScale = yScale * m_height / m_width;
+    m_projection(0, 0) = xScale;
+    m_projection(1, 1) = yScale;
+    m_projection(2, 2) = -(m_zFar + m_zNear) / (m_zFar - m_zNear);
+    m_projection(3, 2) = -1.0f;
+    m_projection(2, 3) = -2.0f * m_zNear * m_zFar / (m_zFar - m_zNear);
+    m_projection(3, 3) = 0.0f;
 
-    projectionIsUpdate = true;
-    float yScale = 1.0f / tan(fovY * 0.5);
-    projection(2, 2) = -(zFar + zNear) / (zFar - zNear);
-    projection(3, 2) = -1.0f;
-    projection(2, 3) = -2.0f * zNear * zFar / (zFar - zNear);
-    projection(3, 3) = 0.0f;
+    m_projectionIsUpdate = true;
   }
 }
 

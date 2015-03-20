@@ -1,8 +1,8 @@
 #include "StarField.h"
 
 StarField::StarField()
-  : chunkGrid(NULL),
-  position(0.0f, 0.0f, 0.0f)
+  : m_chunkGrid(NULL)
+  , m_position(0.0f, 0.0f, 0.0f)
 {
 }
 
@@ -11,19 +11,19 @@ void
 StarField::init(const Eigen::Vector3f& pos)
 {
   int i, j, k;
-  position[0] = floor(pos[0] / CHUNK_SIZE) - CHUNK_NUMBER / 2;
-  position[1] = floor(pos[1] / CHUNK_SIZE) - CHUNK_NUMBER / 2;
-  position[2] = floor(pos[2] / CHUNK_SIZE) - CHUNK_NUMBER / 2;
-  chunkGrid = new Chunk***[CHUNK_NUMBER + 3];
+  m_position[0] = floor(pos[0] / CHUNK_SIZE) - CHUNK_NUMBER / 2;
+  m_position[1] = floor(pos[1] / CHUNK_SIZE) - CHUNK_NUMBER / 2;
+  m_position[2] = floor(pos[2] / CHUNK_SIZE) - CHUNK_NUMBER / 2;
+  m_chunkGrid = new Chunk***[CHUNK_NUMBER + 3];
   for (i = 0; i < CHUNK_NUMBER; i++)
   {
-    chunkGrid[i] = new Chunk**[CHUNK_NUMBER];
+    m_chunkGrid[i] = new Chunk**[CHUNK_NUMBER];
     for (j = 0; j < CHUNK_NUMBER; j++)
     {
-      chunkGrid[i][j] = new Chunk*[CHUNK_NUMBER];
+      m_chunkGrid[i][j] = new Chunk*[CHUNK_NUMBER];
       for (k = 0; k < CHUNK_NUMBER; k++)
       {
-        chunkGrid[i][j][k] = new Chunk(position[0] + i, position[1] + j, position[2] + k);
+        m_chunkGrid[i][j][k] = new Chunk(m_position[0] + i, m_position[1] + j, m_position[2] + k);
       }
     }
   }
@@ -42,10 +42,10 @@ StarField::updateDelete(int x, int y, int z)
       {
         for (k = 0; k < CHUNK_NUMBER; k++)
         {
-          if (chunkGrid[i][j][k] != NULL)
+          if (m_chunkGrid[i][j][k] != NULL)
           {
-            delete chunkGrid[i][j][k];
-            chunkGrid[i][j][k] = NULL;
+            delete m_chunkGrid[i][j][k];
+            m_chunkGrid[i][j][k] = NULL;
           }
         }
       }
@@ -59,10 +59,10 @@ StarField::updateDelete(int x, int y, int z)
       {
         for (k = 0; k < CHUNK_NUMBER; k++)
         {
-          if (chunkGrid[i][j][k] != NULL)
+          if (m_chunkGrid[i][j][k] != NULL)
           {
-            delete chunkGrid[i][j][k];
-            chunkGrid[i][j][k] = NULL;
+            delete m_chunkGrid[i][j][k];
+            m_chunkGrid[i][j][k] = NULL;
           }
         }
       }
@@ -78,10 +78,10 @@ StarField::updateDelete(int x, int y, int z)
       {
         for (k = 0; k < CHUNK_NUMBER; k++)
         {
-          if (chunkGrid[i][j][k] != NULL)
+          if (m_chunkGrid[i][j][k] != NULL)
           {
-            delete chunkGrid[i][j][k];
-            chunkGrid[i][j][k] = NULL;
+            delete m_chunkGrid[i][j][k];
+            m_chunkGrid[i][j][k] = NULL;
           }
         }
       }
@@ -95,10 +95,10 @@ StarField::updateDelete(int x, int y, int z)
       {
         for (k = 0; k < CHUNK_NUMBER; k++)
         {
-          if (chunkGrid[i][j][k] != NULL)
+          if (m_chunkGrid[i][j][k] != NULL)
           {
-            delete chunkGrid[i][j][k];
-            chunkGrid[i][j][k] = NULL;
+            delete m_chunkGrid[i][j][k];
+            m_chunkGrid[i][j][k] = NULL;
           }
         }
       }
@@ -114,10 +114,10 @@ StarField::updateDelete(int x, int y, int z)
       {
         for (k = CHUNK_NUMBER+z; k < CHUNK_NUMBER; k++)
         {
-          if (chunkGrid[i][j][k] != NULL)
+          if (m_chunkGrid[i][j][k] != NULL)
           {
-            delete chunkGrid[i][j][k];
-            chunkGrid[i][j][k] = NULL;
+            delete m_chunkGrid[i][j][k];
+            m_chunkGrid[i][j][k] = NULL;
           }
         }
       }
@@ -131,10 +131,10 @@ StarField::updateDelete(int x, int y, int z)
       {
         for (k = 0; k < z; k++)
         {
-          if (chunkGrid[i][j][k] != NULL)
+          if (m_chunkGrid[i][j][k] != NULL)
           {
-            delete chunkGrid[i][j][k];
-            chunkGrid[i][j][k] = NULL;
+            delete m_chunkGrid[i][j][k];
+            m_chunkGrid[i][j][k] = NULL;
           }
         }
       }
@@ -155,8 +155,8 @@ StarField::updateMove(int x, int y, int z)
       {
         for (k = 0; k < CHUNK_NUMBER; k++)
         {
-          chunkGrid[i - x][j][k] = chunkGrid[i][j][k];
-          chunkGrid[i][j][k] = NULL;
+          m_chunkGrid[i - x][j][k] = m_chunkGrid[i][j][k];
+          m_chunkGrid[i][j][k] = NULL;
         }
       }
     }
@@ -169,8 +169,8 @@ StarField::updateMove(int x, int y, int z)
       {
         for (k = 0; k < CHUNK_NUMBER; k++)
         {
-          chunkGrid[i - x][j][k] = chunkGrid[i][j][k];
-          chunkGrid[i][j][k] = NULL;
+          m_chunkGrid[i - x][j][k] = m_chunkGrid[i][j][k];
+          m_chunkGrid[i][j][k] = NULL;
         }
       }
     }
@@ -186,8 +186,8 @@ StarField::updateMove(int x, int y, int z)
       {
         for (k = 0; k < CHUNK_NUMBER; k++)
         {
-          chunkGrid[i][j - y][k] = chunkGrid[i][j][k];
-          chunkGrid[i][j][k] = NULL;
+          m_chunkGrid[i][j - y][k] = m_chunkGrid[i][j][k];
+          m_chunkGrid[i][j][k] = NULL;
         }
       }
     }
@@ -200,8 +200,8 @@ StarField::updateMove(int x, int y, int z)
       {
         for (k = 0; k < CHUNK_NUMBER; k++)
         {
-          chunkGrid[i][j - y][k] = chunkGrid[i][j][k];
-          chunkGrid[i][j][k] = NULL;
+          m_chunkGrid[i][j - y][k] = m_chunkGrid[i][j][k];
+          m_chunkGrid[i][j][k] = NULL;
         }
       }
     }
@@ -216,8 +216,8 @@ StarField::updateMove(int x, int y, int z)
       {
         for (k = CHUNK_NUMBER - 1 + z; k > 0; k--)
         {
-          chunkGrid[i][j][k - z] = chunkGrid[i][j][k];
-          chunkGrid[i][j][k] = NULL;
+          m_chunkGrid[i][j][k - z] = m_chunkGrid[i][j][k];
+          m_chunkGrid[i][j][k] = NULL;
         }
       }
     }
@@ -230,8 +230,8 @@ StarField::updateMove(int x, int y, int z)
       {
         for (k =z; k < CHUNK_NUMBER; k++)
         {
-          chunkGrid[i][j][k - z] = chunkGrid[i][j][k];
-          chunkGrid[i][j][k] = NULL;
+          m_chunkGrid[i][j][k - z] = m_chunkGrid[i][j][k];
+          m_chunkGrid[i][j][k] = NULL;
         }
       }
     }
@@ -248,9 +248,9 @@ StarField::updateNew()
     {
       for (k = 0; k < CHUNK_NUMBER; k++)
       {
-        if (chunkGrid[i][j][k] == NULL)
+        if (m_chunkGrid[i][j][k] == NULL)
         {
-          chunkGrid[i][j][k] = new Chunk(position[0] + i, position[1] + j, position[2] + k);
+          m_chunkGrid[i][j][k] = new Chunk(m_position[0] + i, m_position[1] + j, m_position[2] + k);
         }
       }
     }
@@ -261,13 +261,13 @@ void
 StarField::update(const Eigen::Vector3f& pos)
 {
   int x, y, z;
-  x = floor(pos[0] / CHUNK_SIZE) - CHUNK_NUMBER / 2 - position[0];
-  y = floor(pos[1] / CHUNK_SIZE) - CHUNK_NUMBER / 2 - position[1];
-  z = floor(pos[2] / CHUNK_SIZE) - CHUNK_NUMBER / 2 - position[2];
+  x = floor(pos[0] / CHUNK_SIZE) - CHUNK_NUMBER / 2 - m_position[0];
+  y = floor(pos[1] / CHUNK_SIZE) - CHUNK_NUMBER / 2 - m_position[1];
+  z = floor(pos[2] / CHUNK_SIZE) - CHUNK_NUMBER / 2 - m_position[2];
 
-  position[0] += x;
-  position[1] += y;
-  position[2] += z;
+  m_position[0] += x;
+  m_position[1] += y;
+  m_position[2] += z;
 
   updateDelete(x, y, z);
   updateMove(x, y, z);
@@ -284,7 +284,7 @@ StarField::draw(Camera& cam)
     {
       for (k = 0; k < CHUNK_NUMBER; k++)
       {
-        chunkGrid[i][j][k]->draw(cam);
+        m_chunkGrid[i][j][k]->draw(cam);
       }
     }
   }

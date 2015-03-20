@@ -5,7 +5,8 @@
 
 #include <Eigen/Geometry>
 
-class MeshLoader{
+class MeshLoader
+{
   public:
     static Mesh* loadMesh(const std::string& filename);
 
