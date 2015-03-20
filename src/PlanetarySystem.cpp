@@ -8,19 +8,20 @@ Mesh* PlanetarySystem::s_mesh = NULL;
 Shader* PlanetarySystem::s_shader = NULL;
 bool PlanetarySystem::s_assetsAreLoad = false;
 
-PlanetarySystem::PlanetarySystem(int i, int j, int k)
-  : m_x(i), m_y(j), m_z(k), m_star(NULL)
+PlanetarySystem::PlanetarySystem(const Eigen::Vector3i& index)
+  : m_index(index)
+  , m_star(NULL)
 {
   if (!s_assetsAreLoad)
     loadAssets();
 
-  float starx, stary, starz;
-  starx = i * PLANETARY_SYSTEM_SIZE + rand() % PLANETARY_SYSTEM_SIZE;
-  stary = j * PLANETARY_SYSTEM_SIZE + rand() % PLANETARY_SYSTEM_SIZE;
-  starz = k * PLANETARY_SYSTEM_SIZE + rand() % PLANETARY_SYSTEM_SIZE;
+  Eigen::Vector3f randomVector(rand() % PLANETARY_SYSTEM_SIZE,
+                               rand() % PLANETARY_SYSTEM_SIZE,
+                               rand() % PLANETARY_SYSTEM_SIZE);
+  Eigen::Vector3f starPosition = float(PLANETARY_SYSTEM_SIZE) * Eigen::Vector3f(index[0], index[1], index[2]) + randomVector;
+  Eigen::Affine3f M = (Eigen::Affine3f) Eigen::Translation3f(starPosition);
 
   m_star = new Star(s_mesh, s_shader);
-  Eigen::Affine3f M = (Eigen::Affine3f) Eigen::Translation3f(starx, stary, starz);
   m_star->setTransformation(M);
 }
 

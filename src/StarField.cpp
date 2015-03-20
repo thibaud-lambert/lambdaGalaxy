@@ -23,7 +23,7 @@ StarField::init(const Eigen::Vector3f& pos)
       m_chunkGrid[i][j] = new Chunk*[CHUNK_NUMBER];
       for (k = 0; k < CHUNK_NUMBER; k++)
       {
-        m_chunkGrid[i][j][k] = new Chunk(m_position[0] + i, m_position[1] + j, m_position[2] + k);
+        m_chunkGrid[i][j][k] = new Chunk(Eigen::Vector3i(m_position[0] + i, m_position[1] + j, m_position[2] + k));
       }
     }
   }
@@ -250,7 +250,7 @@ StarField::updateNew()
       {
         if (m_chunkGrid[i][j][k] == NULL)
         {
-          m_chunkGrid[i][j][k] = new Chunk(m_position[0] + i, m_position[1] + j, m_position[2] + k);
+          m_chunkGrid[i][j][k] = new Chunk(Eigen::Vector3i(m_position[0] + i, m_position[1] + j, m_position[2] + k));
         }
       }
     }

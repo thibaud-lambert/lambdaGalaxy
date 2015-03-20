@@ -10,15 +10,15 @@
 class PlanetarySystem
 {
   public:
-    PlanetarySystem(int i, int j, int k);
+    PlanetarySystem(const Eigen::Vector3i& index);
     void draw(Camera& cam);
+
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   private:
     static void loadAssets();
 
-    int m_x;
-    int m_y;
-    int m_z;
+    Eigen::Vector3i m_index;
     Star* m_star;
     static Mesh* s_mesh;
     static Shader* s_shader;

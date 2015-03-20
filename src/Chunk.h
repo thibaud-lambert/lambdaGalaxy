@@ -10,12 +10,13 @@
 class Chunk
 {
   public:
-    Chunk(int x, int y, int z);
+    Chunk(const Eigen::Vector3i& index);
     void draw(Camera& cam);
+
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
   private:
-    int m_x;
-    int m_y;
-    int m_z;
+    Eigen::Vector3i m_index;
     PlanetarySystem**** m_planetarySystemGrid;
 };
 
