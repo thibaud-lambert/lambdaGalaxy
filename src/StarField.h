@@ -20,8 +20,8 @@ class StarField
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   private:
-    void updateDelete(int x, int y, int z);
-    void updateMove(int x, int y, int z);
+    void updateDelete(const Eigen::Vector3i& pos);
+    void updateMove(const Eigen::Vector3i& pos);
     void updateNew();
 
     Chunk**** m_chunkGrid;
