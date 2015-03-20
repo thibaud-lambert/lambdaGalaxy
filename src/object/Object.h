@@ -9,15 +9,15 @@
 class Object
 {
 public:
-    Object(Mesh *mesh, Shader* shader);
+    Object(Mesh* mesh, Shader* shader);
     virtual ~Object();
     virtual void setTransformation(const Eigen::Affine3f& mat);
-    virtual void draw(Camera &cam);
+    virtual void draw(Camera& cam);
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 protected:
-    virtual void sendUniform(Camera &cam);
+    virtual void sendUniform(Camera& cam);
 
     Shader* shader;
     Mesh* mesh;

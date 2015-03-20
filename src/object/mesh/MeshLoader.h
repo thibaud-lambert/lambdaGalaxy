@@ -7,10 +7,10 @@
 
 class MeshLoader{
   public:
-    static Mesh * loadMesh(const std::string& filename);
+    static Mesh* loadMesh(const std::string& filename);
 
   private:
-    static Mesh * loadObj(const std::string& filename);
+    static Mesh* loadObj(const std::string& filename);
 };
 
 #endif

@@ -11,17 +11,17 @@ class PlanetarySystem
 {
   public:
     PlanetarySystem(int i, int j, int k);
-    void draw(Camera &cam);
+    void draw(Camera& cam);
 
   private:
     int x;
     int y;
     int z;
-    Star * star;
+    Star* star;
 
     static void loadAssets();
-    static Mesh * mesh;
-    static Shader * shader;
+    static Mesh* mesh;
+    static Shader* shader;
     static bool assetsAreLoad;
 };
 

@@ -36,38 +36,44 @@ Camera::getProjection()
   return projection;
 }
 
-void Camera::setPosition(const Eigen::Vector3f &pos)
+void
+Camera::setPosition(const Eigen::Vector3f& pos)
 {
   viewIsUpdate = false;
   position = pos;
 }
 
-void Camera::move(float distance, Eigen::Vector3f &axis)
+void
+Camera::move(float distance, Eigen::Vector3f& axis)
 {
   viewIsUpdate = false;
   axis.normalize();
   position += orientation.toRotationMatrix() * axis * distance;
 }
 
-void Camera::moveFoward(float distance)
+void
+Camera::moveFoward(float distance)
 {
   Eigen::Vector3f vec = Eigen::Vector3f(0,0,1);
   move(distance, vec);
 }
 
-void Camera::moveVertical(float distance)
+void
+Camera::moveVertical(float distance)
 {
-  Eigen::Vector3f vec = Eigen::Vector3f(0,1,0);
+  Eigen::Vector3f vec(0.0f, 1.0f, 0.0f);
   move(distance, vec);
 }
 
-void Camera::moveHorizontal(float distance)
+void
+Camera::moveHorizontal(float distance)
 {
-  Eigen::Vector3f vec = Eigen::Vector3f(1,0,0);
+  Eigen::Vector3f vec(1.0f, 0.0f, 0.0f);
   move(distance, vec);
 }
 
-void Camera::rotate(float theta, const Eigen::Vector3f &axis)
+void
+Camera::rotate(float theta, const Eigen::Vector3f& axis)
 {
   viewIsUpdate = false;
   Eigen::AngleAxisf angleAxis(theta, axis);
@@ -77,22 +83,26 @@ void Camera::rotate(float theta, const Eigen::Vector3f &axis)
   orientation.normalize();
 }
 
-void Camera::roll(float theta)
+void
+Camera::roll(float theta)
 {
-  rotate(theta,Eigen::Vector3f(0,0,1));
+  rotate(theta, Eigen::Vector3f(0.0f, 0.0f, 1.0f));
 }
 
-void Camera::pitch(float theta)
+void
+Camera::pitch(float theta)
 {
-  rotate(theta,Eigen::Vector3f(1,0,0));
+  rotate(theta, Eigen::Vector3f(1.0f, 0.0f, 0.0f));
 }
 
-void Camera::yaw(float theta)
+void
+Camera::yaw(float theta)
 {
-  rotate(theta,Eigen::Vector3f(0,1,0));
+  rotate(theta, Eigen::Vector3f(0.0f, 1.0f, 0.0f));
 }
 
-void Camera::updateViewMatrix()
+void
+Camera::updateViewMatrix()
 {
   if(!viewIsUpdate)
   {
@@ -102,22 +112,23 @@ void Camera::updateViewMatrix()
   }
 }
 
-void Camera::updateProjectionMatrix()
+void
+Camera::updateProjectionMatrix()
 {
   if(!projectionIsUpdate)
   {
     projection.setIdentity();
 
-    float yScale = 1./tan(fovY*0.5);
     float xScale = yScale * height / width;
     projection(0,0) = xScale;
     projection(1,1) = yScale;
-    projection(2,2) = -(zFar+zNear)/(zFar-zNear);
-    projection(3,2) = -1;
-    projection(2,3) = -2*zNear*zFar/(zFar-zNear);
-    projection(3,3) = 0;
 
     projectionIsUpdate = true;
+    float yScale = 1.0f / tan(fovY * 0.5);
+    projection(2, 2) = -(zFar + zNear) / (zFar - zNear);
+    projection(3, 2) = -1.0f;
+    projection(2, 3) = -2.0f * zNear * zFar / (zFar - zNear);
+    projection(3, 3) = 0.0f;
   }
 }
 

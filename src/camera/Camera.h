@@ -6,7 +6,7 @@
 class Camera
 {
   public:
-    Camera(float width, float height, float fovY = M_PI/3);
+    Camera(float width, float height, float fovY = M_PI / 3);
 
     /* Getter */
     const Eigen::Vector3f& getPosition() const;
@@ -14,16 +14,16 @@ class Camera
     const Eigen::Matrix4f& getProjection();
 
     /* Setter */
-    void setPosition(const Eigen::Vector3f &pos);
+    void setPosition(const Eigen::Vector3f& pos);
 
     /* Move camera */
-    void move(float distance, Eigen::Vector3f &axis);
+    void move(float distance, Eigen::Vector3f& axis);
     void moveFoward(float distance);
     void moveVertical(float distance);
     void moveHorizontal(float distance);
 
     /* Rotate camera */
-    void rotate(float theta, const Eigen::Vector3f &axis);
+    void rotate(float theta, const Eigen::Vector3f& axis);
     void roll(float theta);
     void pitch(float theta);
     void yaw(float theta);

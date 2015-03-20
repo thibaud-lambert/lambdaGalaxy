@@ -11,10 +11,10 @@ class Chunk
 {
   public:
     Chunk(int x, int y, int z);
-    void draw(Camera &cam);
+    void draw(Camera& cam);
   private:
-    int x,y,z;
-    PlanetarySystem **** planetarySystemGrid;
+    int x, y, z;
+    PlanetarySystem**** planetarySystemGrid;
 };
 
 #endif

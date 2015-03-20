@@ -16,8 +16,8 @@ class Mesh
   Mesh();
   void drawGeometry(int prg_id, bool usePatch);
 
-  void addVertex(const Eigen::Vector3f &v);
-  void addFaces(const Eigen::Vector3i &f);
+  void addVertex(const Eigen::Vector3f& v);
+  void addFaces(const Eigen::Vector3i& f);
 
   void displayInfo();
 

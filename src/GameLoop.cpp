@@ -4,11 +4,12 @@
 #include <iostream>
 
 GameLoop::GameLoop()
-:window(NULL),cam(NULL),starField(NULL)
+  : window(NULL), cam(NULL), starField(NULL)
 {
 }
 
-void GameLoop::init()
+void
+GameLoop::init()
 {
   /* Initialize glfw */
   if (!glfwInit())
@@ -29,11 +30,11 @@ void GameLoop::init()
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);   
 
   /* Glew */
-  glewExperimental=true;
-  GLenum err=glewInit();
-  if(err!=GLEW_OK)
+  glewExperimental = true;
+  GLenum err = glewInit();
+  if (err != GLEW_OK)
   {
-    std::cout<<"glewInit failed, aborting."<<std::endl;
+    std::cout << "glewInit failed, aborting." << std::endl;
     glfwTerminate();
     exit(1);
   }
@@ -42,7 +43,8 @@ void GameLoop::init()
   initScene();
 }
 
-void GameLoop::run()
+void
+GameLoop::run()
 {
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
@@ -58,23 +60,26 @@ void GameLoop::run()
   }
 }
 
-void GameLoop::terminate()
+void
+GameLoop::terminate()
 {
   /* Terminate glfw */
   glfwTerminate();
 }
 
-void GameLoop::initScene()
+void
+GameLoop::initScene()
 {
-  cam = new Camera(640, 480);
-  cam->setPosition(*new Eigen::Vector3f(0,0,-5));
+  cam = new Camera(640.0f, 480.0f);
+  cam->setPosition(*new Eigen::Vector3f(0.0f, 0.0f, -5.0f));
 
   starField = new StarField();
   starField->init(cam->getPosition());
 
 }
 
-void GameLoop::render()
+void
+GameLoop::render()
 {
   int width, height;
   glfwGetFramebufferSize(window, &width, &height);
@@ -84,13 +89,15 @@ void GameLoop::render()
   starField->draw(*cam);
 }
 
-void GameLoop::update()
+void
+GameLoop::update()
 {
   inputHandler();
   starField->update(cam->getPosition());
 }
 
-void GameLoop::inputHandler()
+void
+GameLoop::inputHandler()
 {
   float speed = 5.0f;
   float time = 4.0f;
@@ -100,22 +107,22 @@ void GameLoop::inputHandler()
   /* Poll for and process events */
   glfwPollEvents();  
   
-  if(glfwGetKey(window, GLFW_KEY_ESCAPE)  == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE)  == GLFW_PRESS)
     glfwSetWindowShouldClose(window, GL_TRUE);
 
-  if(glfwGetKey(window, GLFW_KEY_W)  == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_W)  == GLFW_PRESS)
     cam->moveFoward(-speed * time);
 
-  if(glfwGetKey(window, GLFW_KEY_S)  == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_S)  == GLFW_PRESS)
     cam->moveFoward(speed * time);
 
-  if(glfwGetKey(window, GLFW_KEY_A)  == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_A)  == GLFW_PRESS)
     cam->moveHorizontal(-speed * time);
 
-  if(glfwGetKey(window, GLFW_KEY_D)  == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_D)  == GLFW_PRESS)
     cam->moveHorizontal(speed * time);
 
-  double x,y;
+  double x, y;
   float rotSpeed = 0.0005f;
   glfwGetCursorPos(window, &x, &y);     
 

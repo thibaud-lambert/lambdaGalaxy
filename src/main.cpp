@@ -1,8 +1,9 @@
 #include "GameLoop.h"
 
-int main(void)
+int
+main(void)
 {
-  GameLoop * gameloop = new GameLoop();
+  GameLoop* gameloop = new GameLoop();
   gameloop->init();
   gameloop->run();
   gameloop->terminate();

@@ -26,11 +26,11 @@ class GameLoop
 
   private:
 
-    GLFWwindow * window;
+    GLFWwindow* window;
 
-    Camera * cam;
+    Camera* cam;
 
-    StarField * starField;
+    StarField* starField;
 };
 
 #endif

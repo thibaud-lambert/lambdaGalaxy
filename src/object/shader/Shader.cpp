@@ -10,12 +10,13 @@ Shader::Shader()
 {
 }
 
-std::string Shader::loadSourceFromFile(const std::string& filename)
+std::string
+Shader::loadSourceFromFile(const std::string& filename)
 {
   std::string source = "";
 
-  std::ifstream in(filename.c_str(),std::ios::in);
-  if(!in)
+  std::ifstream in(filename.c_str(), std::ios::in);
+  if (!in)
   {
     std::cerr << "File not found " << filename << std::endl;
     return source;
@@ -23,45 +24,48 @@ std::string Shader::loadSourceFromFile(const std::string& filename)
 
   const int maxBuffersize = 2048;
   char buffer[maxBuffersize];
-  while(in.getline(buffer, maxBuffersize))
-  {
+
+  while (in.getline(buffer, maxBuffersize))
     source += std::string(buffer) + "\n";
-  }
 
   return source;
 }
 
-bool Shader::loadFromFiles(const std::string& fileV, const std::string& fileF,
-    const std::string& fileTCS, const std::string& fileTES,
-    const std::string& fileGEO)
+bool
+Shader::loadFromFiles(const std::string& fileV, const std::string& fileF,
+                      const std::string& fileTCS, const std::string& fileTES,
+                      const std::string& fileGEO)
 {
   std::string vsrc = loadSourceFromFile(fileV);
   std::string fsrc = loadSourceFromFile(fileF);
   std::string geosrc;
-  if(!fileGEO.empty())
-  {
+
+  if (!fileGEO.empty())
     geosrc = loadSourceFromFile(fileGEO);
-  }
+
   std::string tcssrc; 
   std::string tessrc;
-  if(!fileTES.empty() && !fileTCS.empty())
+
+  if (!fileTES.empty() && !fileTCS.empty())
   {
     tcssrc = loadSourceFromFile(fileTCS);
     tessrc = loadSourceFromFile(fileTES);
   }
+
   return loadSources(vsrc, fsrc, tcssrc, tessrc, geosrc);
 }
 
-bool Shader::addShader(int shaderType, const std::string& src)
+bool
+Shader::addShader(int shaderType, const std::string& src)
 {
   GLuint shaderID = glCreateShader(shaderType);
-  const GLchar * arbSource = src.c_str();
+  const GLchar* arbSource = src.c_str();
 
   glShaderSource(shaderID, 1, (const GLchar **)&arbSource, 0);
   glCompileShader(shaderID);
 
   int compiled;
-  glGetShaderiv(shaderID,GL_COMPILE_STATUS,&compiled);
+  glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compiled);
   printShaderInfoLog(shaderID);
 
   if(compiled)
@@ -70,9 +74,10 @@ bool Shader::addShader(int shaderType, const std::string& src)
   return compiled;
 }
 
-bool Shader::loadSources(const std::string& vsrc, const std::string& fsrc,
-    const std::string& tcssrc, const std::string& tessrc,
-    const std::string& geosrc)
+bool
+Shader::loadSources(const std::string& vsrc, const std::string& fsrc,
+                    const std::string& tcssrc, const std::string& tessrc,
+                    const std::string& geosrc)
 {
   bool allIsOk = true;
 
@@ -84,7 +89,7 @@ bool Shader::loadSources(const std::string& vsrc, const std::string& fsrc,
   // fragment shader
   allIsOk = allIsOk && addShader(GL_FRAGMENT_SHADER, fsrc);
 
-  if(!tcssrc.empty() && !tessrc.empty())
+  if (!tcssrc.empty() && !tessrc.empty())
   {
     //tesselation control shader
     allIsOk = allIsOk && addShader(GL_TESS_CONTROL_SHADER, tcssrc);
@@ -93,7 +98,7 @@ bool Shader::loadSources(const std::string& vsrc, const std::string& fsrc,
     allIsOk = allIsOk && addShader(GL_TESS_EVALUATION_SHADER, tessrc);
   }
 
-  if(!geosrc.empty())
+  if (!geosrc.empty())
   {
     // geometry shader
     allIsOk = allIsOk && addShader(GL_GEOMETRY_SHADER, geosrc);
@@ -111,35 +116,42 @@ bool Shader::loadSources(const std::string& vsrc, const std::string& fsrc,
   return allIsOk;
 }
 
-void Shader::activate() const
+void
+Shader::activate() const
 {
   assert(mIsValid);
   glUseProgram(mProgramID);
 }
 
-int Shader::getUniformLocation(const char* name) const
+int
+Shader::getUniformLocation(const char* name) const
 {
   assert(mIsValid);
   return glGetUniformLocation(mProgramID, name);
 }
 
-int Shader::getAttribLocation(const char* name) const
+int
+Shader::getAttribLocation(const char* name) const
 {
   assert(mIsValid);
   return glGetAttribLocation(mProgramID, name);
 }
 
-void Shader::printProgramInfoLog(GLuint objectID)
+void
+Shader::printProgramInfoLog(GLuint objectID)
 {
   int infologLength = 0, charsWritten = 0;
-  GLchar *infoLog;
-  glGetProgramiv(objectID,GL_INFO_LOG_LENGTH, &infologLength);
-  if(infologLength > 0)
+  GLchar* infoLog;
+  glGetProgramiv(objectID, GL_INFO_LOG_LENGTH, &infologLength);
+
+  if (infologLength > 0)
   {
     infoLog = new GLchar[infologLength];
     glGetProgramInfoLog(objectID, infologLength, &charsWritten, infoLog);
-    if (charsWritten>0)
+
+    if (charsWritten > 0)
       std::cerr << "program info : \n" << infoLog << std::endl;
+
     delete[] infoLog;
   }
   else
@@ -148,17 +160,21 @@ void Shader::printProgramInfoLog(GLuint objectID)
   }
 }
 
-void Shader::printShaderInfoLog(GLuint objectID)
+void
+Shader::printShaderInfoLog(GLuint objectID)
 {
     int infologLength = 0, charsWritten = 0;
-    GLchar *infoLog;
-    glGetShaderiv(objectID,GL_INFO_LOG_LENGTH, &infologLength);
-    if(infologLength > 0)
+    GLchar* infoLog;
+    glGetShaderiv(objectID, GL_INFO_LOG_LENGTH, &infologLength);
+
+    if (infologLength > 0)
     {
         infoLog = new GLchar[infologLength];
         glGetShaderInfoLog(objectID, infologLength, &charsWritten, infoLog);
-        if (charsWritten>0)
-            std::cerr << "Shader info : \n" << infoLog << std::endl;
+
+        if (charsWritten > 0)
+          std::cerr << "Shader info : \n" << infoLog << std::endl;
+
         delete[] infoLog;
     }
     else
