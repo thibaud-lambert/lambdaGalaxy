@@ -3,8 +3,11 @@
 #include <cstdlib>
 #include <iostream>
 
+#define WINDOW_WIDTH 1600
+#define WINDOW_HEIGH 800
+
 GameLoop::GameLoop()
-:window(NULL),cam(NULL),starField(NULL)
+:window(NULL),cam(NULL),starField(NULL),lastTime(0)
 {
 }
 
@@ -16,7 +19,7 @@ void GameLoop::init()
     exit(1);
   }
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(640, 480, "lambdaGalaxy", NULL, NULL);
+  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGH, "lambdaGalaxy", NULL, NULL);
   if (!window)
   {
     glfwTerminate();
@@ -26,7 +29,7 @@ void GameLoop::init()
   /* Make the window's context current */
   glfwMakeContextCurrent(window);
 
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);   
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   /* Glew */
   glewExperimental=true;
@@ -66,11 +69,12 @@ void GameLoop::terminate()
 
 void GameLoop::initScene()
 {
-  cam = new Camera(640, 480);
+  cam = new Camera(WINDOW_WIDTH, WINDOW_HEIGH);
   cam->setPosition(*new Eigen::Vector3f(0,0,-5));
 
   starField = new StarField();
   starField->init(cam->getPosition());
+  lastTime = glfwGetTime();
 
 }
 
@@ -95,33 +99,35 @@ void GameLoop::update()
 void GameLoop::inputHandler()
 {
   float dist = starField->getDist(cam->getPosition());
-  float speed = 5.0f;
+  float speed = 1000.0f;
   float time = glfwGetTime();
+  float elapsed_time = time - lastTime;
+  lastTime = time;
 
   /* Poll for and process events */
-  glfwPollEvents();  
-  
+  glfwPollEvents();
+
   if(glfwGetKey(window, GLFW_KEY_ESCAPE)  == GLFW_PRESS)
     glfwSetWindowShouldClose(window, GL_TRUE);
 
   if(glfwGetKey(window, GLFW_KEY_W)  == GLFW_PRESS)
-    cam->moveFoward(-speed * time);
+    cam->moveFoward(-speed * elapsed_time);
 
   if(glfwGetKey(window, GLFW_KEY_S)  == GLFW_PRESS)
-    cam->moveFoward(speed * time);
+    cam->moveFoward(speed * elapsed_time);
 
   if(glfwGetKey(window, GLFW_KEY_A)  == GLFW_PRESS)
-    cam->moveHorizontal(-speed * time);
+    cam->moveHorizontal(-speed * elapsed_time);
 
   if(glfwGetKey(window, GLFW_KEY_D)  == GLFW_PRESS)
-    cam->moveHorizontal(speed * time);
+    cam->moveHorizontal(speed * elapsed_time);
 
   double x,y;
-  float rotSpeed = 0.0005f;
-  glfwGetCursorPos(window, &x, &y);     
+  float rotSpeed = 0.05f;
+  glfwGetCursorPos(window, &x, &y);
 
-  cam->yaw(rotSpeed * (320 - x) * time);
-  cam->pitch(rotSpeed * (240 - y) * time);
+  cam->yaw(rotSpeed * (WINDOW_WIDTH/2. - x) * elapsed_time);
+  cam->pitch(rotSpeed * (WINDOW_HEIGH/2. - y) * elapsed_time);
 
-  glfwSetCursorPos(window, 320, 240);
-} 
+  glfwSetCursorPos(window, WINDOW_WIDTH/2., WINDOW_HEIGH/2.);
+}

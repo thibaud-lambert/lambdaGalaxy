@@ -31,7 +31,8 @@ class GameLoop
     Camera * cam;
 
     StarField * starField;
+
+    float lastTime;
 };
 
 #endif
-
